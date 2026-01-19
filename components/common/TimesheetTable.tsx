@@ -1,0 +1,145 @@
+"use client";
+
+import { Dropdown } from "../ui/Dropdown";
+import { Pagination } from "../ui/pagination";
+import Footer from "./Footer";
+import { useTimesheetsList } from "@/hooks/useTimesheet";
+import Link from "next/link";
+
+const statusColors: Record<string, string> = {
+  COMPLETED: "bg-green-100 text-green-700",
+  INCOMPLETE: "bg-yellow-100 text-yellow-700",
+  MISSING: "bg-pink-100 text-pink-700",
+};
+
+export default function TimesheetsPage() {
+  const {
+    dateRange,
+    setDateRange,
+    status,
+    setStatus,
+    currentPage,
+    setCurrentPage,
+    itemsPerPage,
+    setItemsPerPage,
+    paginatedData,
+    totalPages,
+    createTimesheet,
+  } = useTimesheetsList();
+
+  const handleCreateTimesheet = () => {
+    createTimesheet();
+  };
+
+  return (
+    <div className="min-h-screen">
+      <div className="w-[80%] mx-auto p-6">
+        <div className="rounded-lg shadow p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold">Your Timesheets</h2>
+            <button
+              onClick={handleCreateTimesheet}
+              className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition font-medium"
+            >
+              + Create New Timesheet
+            </button>
+          </div>
+
+          {/* Filters */}
+          <div className="flex gap-4 mb-6">
+            <Dropdown
+              label="Date Range"
+              options={[
+                "Last 30 Days",
+                "Last 60 Days",
+                "Last 90 Days",
+                "This Year",
+              ]}
+              value={dateRange}
+              onChange={setDateRange}
+            />
+            <Dropdown
+              label="Status"
+              options={["All Status", "COMPLETED", "INCOMPLETE", "MISSING"]}
+              value={status}
+              onChange={setStatus}
+            />
+          </div>
+
+          {/* Table */}
+          <div className="overflow-x-auto mb-6">
+            {paginatedData.length === 0 ? (
+              <div className="text-center py-12 text-gray-500">
+                <p className="text-lg mb-2">No timesheets yet</p>
+                <p className="text-sm">
+                  Click "Create New Timesheet" to get started
+                </p>
+              </div>
+            ) : (
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-border bg-[#F9FAFB]">
+                    <th className="text-left px-4 py-3 text-sm font-semibold ">
+                      WEEK #
+                    </th>
+                    <th className="text-left px-4 py-3 text-sm font-semibold ">
+                      DATE
+                    </th>
+                    <th className="text-left px-4 py-3 text-sm font-semibold">
+                      STATUS
+                    </th>
+                    <th className="text-left px-4 py-3 text-sm font-semibold ">
+                      ACTIONS
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {paginatedData.map((item) => (
+                    <tr
+                      key={item.id}
+                      className="border-b border-border hover:bg-gray-50 "
+                    >
+                      <td className="px-4 py-4 bg-[#F9FAFB]">{item.week}</td>
+                      <td className="px-4 py-4 ">{item.dateRange}</td>
+                      <td className="px-4 py-4">
+                        <span
+                          className={`inline-block px-3 py-1 rounded-full text-xs ${
+                            statusColors[item.status]
+                          }`}
+                        >
+                          {item.status}
+                        </span>
+                      </td>
+                      <td className="px-4 py-4">
+                        <Link
+                          href={`/dashboard/${item.id}`}
+                          className="text-primary font-medium text-sm hover:underline"
+                        >
+                          View Details
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+
+          {/* Pagination */}
+          {paginatedData.length > 0 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              itemsPerPage={itemsPerPage}
+              onPageChange={setCurrentPage}
+              onItemsPerPageChange={setItemsPerPage}
+            />
+          )}
+        </div>
+      </div>
+
+      {/* Footer */}
+      <Footer />
+    </div>
+  );
+}
