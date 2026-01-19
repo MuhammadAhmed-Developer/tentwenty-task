@@ -50,31 +50,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     : null;
 
-  const login = useCallback(
-    async (email: string, password: string) => {
-      try {
-        setError(null);
-        const result = await signIn("credentials", {
-          email,
-          password,
-          callbackUrl: "/dashboard",
-        });
+  const login = useCallback(async (email: string, password: string) => {
+    setError(null);
 
-        if (result?.error) {
-          setError("Invalid email or password");
-          throw new Error("Invalid credentials");
-        }
+    const result = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
 
-        if (result?.ok) {
-          router.push("/dashboard");
-        }
-      } catch (err) {
-        setError("An error occurred during login");
-        throw err;
-      }
-    },
-    [router]
-  );
+    if (result?.error) {
+      setError("Invalid email or password");
+      return;
+    }
+
+    if (result?.ok) {
+      window.location.href = "/dashboard";
+    }
+  }, []);
 
   const logout = useCallback(async () => {
     try {
