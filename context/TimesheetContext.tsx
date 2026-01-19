@@ -9,50 +9,7 @@ import React, {
   useEffect,
 } from "react";
 import type { Task, TimesheetRecord } from "@/types/timesheet";
-
-// Helper function to get the start of the week (Monday) for a given date
-function getWeekStartDate(date: Date): Date {
-  const d = new Date(date);
-  const day = d.getDay();
-  const diff = d.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is Sunday
-  return new Date(d.setDate(diff));
-}
-
-// Helper function to calculate week dates based on current date + offset
-function getWeekDates(weekOffset: number = 0) {
-  const today = new Date();
-  const currentWeekStart = getWeekStartDate(today);
-
-  // Add weeks offset
-  const targetWeekStart = new Date(currentWeekStart);
-  targetWeekStart.setDate(currentWeekStart.getDate() + weekOffset * 7);
-
-  const startDate = new Date(targetWeekStart);
-  const endDate = new Date(targetWeekStart);
-  endDate.setDate(startDate.getDate() + 4); // 5 working days (Mon-Fri)
-
-  const formatDate = (date: Date) => {
-    const day = date.getDate();
-    const month = date.toLocaleString("default", { month: "long" });
-    return `${day} ${month}, ${date.getFullYear()}`;
-  };
-
-  // Calculate week number of the year
-  const oneJan = new Date(targetWeekStart.getFullYear(), 0, 1);
-  const numberOfDays = Math.floor(
-    (targetWeekStart.getTime() - oneJan.getTime()) / (24 * 60 * 60 * 1000)
-  );
-  const weekNumber = Math.ceil((numberOfDays + oneJan.getDay() + 1) / 7);
-
-  return {
-    startDate: formatDate(startDate),
-    endDate: formatDate(endDate),
-    dateRange: `${formatDate(startDate)} - ${formatDate(endDate)}`,
-    weekNumber,
-    startDateObj: startDate,
-    endDateObj: endDate,
-  };
-}
+import { getWeekDates } from "@/utils/dateHelpers";
 
 // LocalStorage key
 const STORAGE_KEY = "tentwenty_timesheets";
@@ -84,7 +41,6 @@ export function TimesheetProvider({ children }: { children: React.ReactNode }) {
   const [timesheets, setTimesheets] = useState<TimesheetRecord[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Load from localStorage on mount
   useEffect(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
@@ -111,7 +67,7 @@ export function TimesheetProvider({ children }: { children: React.ReactNode }) {
   }, [timesheets, isLoaded]);
 
   const createTimesheet = useCallback(() => {
-    // Calculate the next week offset based on existing timesheets
+    // Calculate the next week  based on existing timesheets
     const weekOffset = timesheets.length;
     const dates = getWeekDates(weekOffset);
 

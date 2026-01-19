@@ -18,13 +18,10 @@ const handler = NextAuth({
         if (!credentials?.email || !credentials?.password) {
           return null;
         }
-
-        // Compare with constant credentials
         if (
           credentials.email === VALID_EMAIL &&
           credentials.password === VALID_PASSWORD
         ) {
-          // Return user object on successful authentication
           return {
             id: "1",
             email: VALID_EMAIL,
@@ -32,7 +29,6 @@ const handler = NextAuth({
           };
         }
 
-        // Return null if credentials don't match
         return null;
       },
     }),

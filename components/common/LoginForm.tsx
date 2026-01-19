@@ -27,7 +27,7 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="w-full lg:w-1/2 bg-gray-50 flex items-center justify-center p-6 sm:p-8 lg:p-12">
+    <div className="w-full lg:w-1/2  flex items-center justify-center p-6 sm:p-8 lg:p-12">
       <form onSubmit={handleSubmit} className="w-full max-w-md">
         <h1 className="text-xl sm:text-2xl lg:text-[20px] font-bold mb-6 sm:mb-8">
           Welcome back
@@ -62,15 +62,12 @@ export default function LoginForm() {
         </div>
 
         <div className="mb-6">
-          <label className="flex items-center">
-            <input
-              type="checkbox"
-              checked={rememberMe}
-              onChange={(e) => setRememberMe(e.target.checked)}
-              className="w-4 h-4 rounded border-gray-300 cursor-pointer"
-            />
-            <span className="ml-2 text-sm">Remember me</span>
-          </label>
+          <Input
+            type="checkbox"
+            checkboxLabel="Remember me"
+            checked={rememberMe}
+            onChange={(e) => setRememberMe(e.target.checked)}
+          />
         </div>
 
         <Button type="submit" fullWidth disabled={isLoading}>

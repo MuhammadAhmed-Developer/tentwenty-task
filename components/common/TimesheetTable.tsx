@@ -7,9 +7,9 @@ import { useTimesheetsList } from "@/hooks/useTimesheet";
 import Link from "next/link";
 
 const statusColors: Record<string, string> = {
-  COMPLETED: "bg-green-100 text-green-700",
-  INCOMPLETE: "bg-yellow-100 text-yellow-700",
-  MISSING: "bg-pink-100 text-pink-700",
+  COMPLETED: "bg-[#DEF7EC] text-[#03543F]",
+  INCOMPLETE: "bg-[#FDF6B2] text-[#723B13]",
+  MISSING: "bg-[#FCE8F3] text-[#99154B]",
 };
 
 export default function TimesheetsPage() {
@@ -45,7 +45,6 @@ export default function TimesheetsPage() {
             </button>
           </div>
 
-          {/* Filters */}
           <div className="flex flex-row  gap-3 sm:gap-4 mb-6">
             <Dropdown
               label="Date Range"
@@ -76,7 +75,7 @@ export default function TimesheetsPage() {
                 </p>
               </div>
             ) : (
-              <table className="w-full min-w-[640px]">
+              <table className="w-full min-w-160">
                 <thead>
                   <tr className="border-b border-border bg-[#F9FAFB]">
                     <th className="text-left px-3 sm:px-4 py-3 text-xs sm:text-sm font-semibold">
@@ -107,7 +106,7 @@ export default function TimesheetsPage() {
                       </td>
                       <td className="px-3 sm:px-4 py-3 sm:py-4">
                         <span
-                          className={`inline-block px-2 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs ${
+                          className={`inline-block px-2 sm:px-3 py-1 rounded-md text-[10px] sm:text-xs ${
                             statusColors[item.status]
                           }`}
                         >

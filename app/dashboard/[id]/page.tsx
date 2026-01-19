@@ -8,49 +8,7 @@ import { Navbar } from "@/components/common/Navbar";
 import { useParams } from "next/navigation";
 import type { Task } from "@/types/timesheet";
 import Footer from "@/components/common/Footer";
-
-// Helper function to generate 5 working days from start date string
-function generateWeekDates(startDateString: string) {
-  const dates = [];
-
-  // Parse the date string like "20 January, 2026"
-  const dateParts = startDateString.split(" ");
-  const day = parseInt(dateParts[0]);
-  const monthName = dateParts[1].replace(",", "");
-  const year = parseInt(dateParts[2]);
-
-  const monthMap: { [key: string]: number } = {
-    January: 0,
-    February: 1,
-    March: 2,
-    April: 3,
-    May: 4,
-    June: 5,
-    July: 6,
-    August: 7,
-    September: 8,
-    October: 9,
-    November: 10,
-    December: 11,
-  };
-
-  const start = new Date(year, monthMap[monthName], day);
-
-  for (let i = 0; i < 5; i++) {
-    const date = new Date(start);
-    date.setDate(start.getDate() + i);
-
-    const dateStr = date.toISOString().split("T")[0];
-    const label = date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-    });
-
-    dates.push({ date: dateStr, label });
-  }
-
-  return dates;
-}
+import { generateWeekDates } from "@/utils/dateHelpers";
 
 export default function TimesheetDetail() {
   const params = useParams();
@@ -114,7 +72,6 @@ export default function TimesheetDetail() {
 
   const weekDates = useMemo(() => {
     if (!currentTimesheet) return [];
-    // Generate dates from timesheet start date
     return generateWeekDates(currentTimesheet.startDate);
   }, [currentTimesheet]);
 
