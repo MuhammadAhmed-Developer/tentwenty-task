@@ -1,9 +1,8 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-// Constant credentials for authentication
-const VALID_EMAIL = "admin@tentwenty.com";
-const VALID_PASSWORD = "admin123";
+const VALID_EMAIL = process.env.VALID_EMAIL || "";
+const VALID_PASSWORD = process.env.VALID_PASSWORD || "";
 
 const handler = NextAuth({
   providers: [
