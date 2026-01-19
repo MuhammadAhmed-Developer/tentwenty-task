@@ -10,7 +10,6 @@ export function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -33,7 +32,7 @@ export function Navbar() {
   return (
     <nav className="shadow-xs bg-white px-6 py-4 flex items-center justify-between">
       <div className="flex items-center gap-8">
-        <Link href="/" className="text-[24px] font-bold">
+        <Link href="/dashboard" className="text-[24px] font-bold">
           ticktock
         </Link>
         <span className="text-heading">TimeStamp</span>
