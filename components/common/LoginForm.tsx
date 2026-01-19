@@ -27,9 +27,11 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="w-1/2 bg-gray-50 flex items-center justify-center p-8">
+    <div className="w-full lg:w-1/2 bg-gray-50 flex items-center justify-center p-6 sm:p-8 lg:p-12">
       <form onSubmit={handleSubmit} className="w-full max-w-md">
-        <h1 className="text-[20px] font-bold mb-8">Welcome back</h1>
+        <h1 className="text-xl sm:text-2xl lg:text-[20px] font-bold mb-6 sm:mb-8">
+          Welcome back
+        </h1>
 
         {error && (
           <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm">

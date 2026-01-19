@@ -7,6 +7,7 @@ import { AddEntryModal } from "@/components/common/TimesheetModal";
 import { Navbar } from "@/components/common/Navbar";
 import { useParams } from "next/navigation";
 import type { Task } from "@/types/timesheet";
+import Footer from "@/components/common/Footer";
 
 // Helper function to generate 5 working days from start date string
 function generateWeekDates(startDateString: string) {
@@ -121,7 +122,7 @@ export default function TimesheetDetail() {
     return (
       <div className="min-h-screen">
         <Navbar />
-        <main className="max-w-6xl mx-auto px-4 py-8">
+        <main className="max-w-7xl mx-auto px-4 py-8">
           <div className="bg-white shadow rounded-lg p-8 text-center">
             <h1 className="text-2xl font-bold mb-4">Timesheet Not Found</h1>
             <p className="text-gray-600">
@@ -134,32 +135,34 @@ export default function TimesheetDetail() {
   }
 
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-screen">
       <Navbar />
-      <main className="max-w-6xl mx-auto px-4 py-8">
-        <div className="bg-white shadow rounded-lg p-8">
-          <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between">
+      <main className="w-full lg:max-w-[85%] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <div className="bg-white shadow rounded-lg p-4 sm:p-6 lg:p-8">
+          <div className="mb-6 sm:mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-              <h1 className="text-[24px] font-bold  mb-2">
+              <h1 className="text-lg sm:text-xl lg:text-[24px] font-bold mb-2">
                 This week's timesheet
               </h1>
-              <p className="">{currentTimesheet.dateRange}</p>
+              <p className="text-sm sm:text-base">
+                {currentTimesheet.dateRange}
+              </p>
             </div>
-            <div className="mb-8 flex flex-col items-center gap-2">
+            <div className="flex flex-col items-start md:items-center gap-2">
               <div>
-                <p className="text-[14px]  ">
+                <p className="text-xs sm:text-[14px] font-bold">
                   {totalHours}/{targetHours} hrs
                 </p>
               </div>
-              <div className=" w-50">
-                <div className="flex items-end justify-end etween mb-2 gap-3">
-                  <div className="text-sm font-medium">
+              <div className="w-full md:w-50">
+                <div className="flex items-end justify-between mb-2 gap-3">
+                  <div className="text-xs sm:text-sm font-medium">
                     {Math.round(progressPercentage)}%
                   </div>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div
-                    className="bg-orange-400 h-2 rounded-full transition-all duration-300"
+                    className="bg-[#FF8A4C] h-2 rounded-full transition-all duration-300"
                     style={{ width: `${progressPercentage}%` }}
                   />
                 </div>
@@ -167,12 +170,15 @@ export default function TimesheetDetail() {
             </div>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {weekDates.map(({ date, label }) => (
-              <div key={date} className="flex gap-6">
+              <div
+                key={date}
+                className="flex flex-col sm:flex-row gap-3 sm:gap-6"
+              >
                 {/* Date Label - Fixed width on the left */}
-                <div className="w-20 shrink-0">
-                  <h3 className="text-lg font-semibold text-gray-900">
+                <div className="w-full sm:w-20 shrink-0">
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-900">
                     {label}
                   </h3>
                 </div>
@@ -182,21 +188,18 @@ export default function TimesheetDetail() {
                   {tasksByDate[date]?.map((task) => (
                     <div
                       key={task.id}
-                      className="flex items-center justify-between p-4 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 transition"
+                      className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 sm:p-4 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 transition gap-3"
                     >
-                      <div className="flex-1">
-                        <p className="font-medium text-gray-900">
-                          {task.description}
-                        </p>
-                        <p className="text-sm text-gray-500 mt-1">
+                      <div className="flex-1 w-full">
+                        <p className="md:text-xl sm:text-sm text-heading  mt-1">
                           {task.workType}
                         </p>
                       </div>
-                      <div className="flex items-center gap-4">
-                        <span className="text-sm font-medium">
+                      <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto justify-between sm:justify-end">
+                        <span className="text-xs sm:text-sm font-medium">
                           {task.hours} hrs
                         </span>
-                        <span className="text-primary hover:text-primary text-sm font-medium">
+                        <span className="text-primary hover:text-primary text-xs sm:text-sm font-medium bg-primary/10 px-3 py-1 rounded-md">
                           {task.project}
                         </span>
                         <TaskMenu
@@ -209,7 +212,7 @@ export default function TimesheetDetail() {
 
                   <button
                     onClick={() => handleAddTask(date)}
-                    className="w-full p-4 border-2 border-dashed border-blue-300 rounded-lg text-primary hover:bg-blue-50 transition flex items-center justify-center gap-2 font-medium"
+                    className="w-full p-3 sm:p-4 border-2 border-dashed border-primary/40 rounded-lg text-primary hover:bg-primary/10 transition flex items-center justify-center gap-2 font-medium text-sm sm:text-base"
                   >
                     <span>+</span> Add new task
                   </button>
@@ -220,9 +223,7 @@ export default function TimesheetDetail() {
         </div>
       </main>
 
-      <footer className="text-center py-8  text-sm">
-        © 2024 tentwenty. All rights reserved.
-      </footer>
+      <Footer />
 
       <AddEntryModal
         isOpen={isModalOpen}
