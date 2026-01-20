@@ -1,27 +1,20 @@
-/**
- * Get the start of the week (Monday) for a given date
- */
 export function getWeekStartDate(date: Date): Date {
   const d = new Date(date);
   const day = d.getDay();
-  const diff = d.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is Sunday
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
   return new Date(d.setDate(diff));
 }
 
-/**
- * Calculate week dates based on current date + offset
- */
 export function getWeekDates(weekOffset: number = 0) {
   const today = new Date();
   const currentWeekStart = getWeekStartDate(today);
 
-  // Add weeks offset
   const targetWeekStart = new Date(currentWeekStart);
   targetWeekStart.setDate(currentWeekStart.getDate() + weekOffset * 7);
 
   const startDate = new Date(targetWeekStart);
   const endDate = new Date(targetWeekStart);
-  endDate.setDate(startDate.getDate() + 4); // 5 working days (Mon-Fri)
+  endDate.setDate(startDate.getDate() + 4);
 
   const formatDate = (date: Date) => {
     const day = date.getDate();
@@ -29,7 +22,6 @@ export function getWeekDates(weekOffset: number = 0) {
     return `${day} ${month}, ${date.getFullYear()}`;
   };
 
-  // Calculate week number of the year
   const oneJan = new Date(targetWeekStart.getFullYear(), 0, 1);
   const numberOfDays = Math.floor(
     (targetWeekStart.getTime() - oneJan.getTime()) / (24 * 60 * 60 * 1000)
@@ -46,14 +38,9 @@ export function getWeekDates(weekOffset: number = 0) {
   };
 }
 
-/**
- * Generate 5 working days from a start date string
- * @param startDateString - Date string in format "20 January, 2026"
- */
 export function generateWeekDates(startDateString: string) {
   const dates = [];
 
-  // Parse the date string like "20 January, 2026"
   const dateParts = startDateString.split(" ");
   const day = parseInt(dateParts[0]);
   const monthName = dateParts[1].replace(",", "");

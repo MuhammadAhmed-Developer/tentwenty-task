@@ -49,7 +49,6 @@ export default function TimesheetDetail() {
     date: string;
   }) => {
     if (editingTask) {
-      // Update existing task
       updateTask(editingTask.id, {
         project: data.project,
         workType: data.workType,
@@ -57,7 +56,6 @@ export default function TimesheetDetail() {
         hours: data.hours,
       });
     } else {
-      // Add new task
       addTask({
         date: data.date,
         project: data.project,
@@ -133,7 +131,6 @@ export default function TimesheetDetail() {
                 key={date}
                 className="flex flex-col sm:flex-row gap-3 sm:gap-6"
               >
-                {/* Date Label - Fixed width on the left */}
                 <div className="w-full sm:w-20 shrink-0">
                   <h3 className="text-base sm:text-lg font-semibold text-gray-900">
                     {label}
